@@ -1,6 +1,7 @@
 import unittest
 
-from simple_googleplay import leaderboard, search, developer, app, FREE, PAID
+from sgp import (leaderboard, search, developer,
+                 app, FREE, PAID)
 
 class Developer(unittest.TestCase):
     def test_not_exists_developer(self):

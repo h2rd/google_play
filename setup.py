@@ -7,7 +7,8 @@ setup(
     author_email='skrynkovskyy@gmail.com',
     description='Simple Google Play interface',
     license="BSD",
-    keywords='googleplay spider appinfo leaderboard search developer apps',
+    keywords=('googleplay spider appinfo leaderboard'
+             'search developer apps appsinfo'),
     url='https://github.com/h2rd/simple-googleplay',
     version='0.1',
     packages=['sgp'],

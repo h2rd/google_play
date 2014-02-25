@@ -6,8 +6,6 @@ from grab.selector import XpathSelector
 
 import requests
 
-__version__ = '0.1'
-
 CATEGORIES = [
     "application", "app_wallpaper", "app_widgets", "arcade",
     "books_and_reference", "brain", "business", "cards",

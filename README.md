@@ -14,7 +14,6 @@ Examples
 --------
 
 ```python
-python
 >>> from google_play import app
 >>> app('com.twitter.android')
 {'category': 'Social',

@@ -1,13 +1,13 @@
-simple-googleplay
-=================
+Google play
+===========
 
-simple google play spider
+Google Play app featcher
 
 Setup
 -----
 
 ```
-pip install git+https://github.com/h2rd/google_play
+pip install google_play
 ```
 
 Example

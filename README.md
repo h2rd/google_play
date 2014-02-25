@@ -17,6 +17,9 @@ This is example which return info about app
 
 ```
 python
+```
+
+```python
 >>> from google_play import app
 >>> app('com.twitter.android')
 {'category': 'Social',

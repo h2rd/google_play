@@ -35,10 +35,21 @@ python
  'developer_name': 'Twitter, Inc.',
  'version': 'Varies with device',
  'developer_website': 'https://support.twitter.com/articles/20169915',
- 'images': ['https://lh6.ggpht.com/uUslqIsgo-3u38k_R-8rQYBNZvseBNAuwdcuuRfwgWiMpWfe5NFBkMUf758e4p7USNE=h310', 'https://lh4.ggpht.com/PplZu3Dfy_8Lqgr8lNWCMxd43jHqgTwaBdWwqPnVjmY7J93xrOgTKaB3jITsUafRuX0=h310', 'https://lh6.ggpht.com/udwukvUDYgnNOXwFqOXJ2lxZ3jghInCGD8RhSMuz2vtZ-GCI05nZpgxAnNG8IdOPyuXU=h310', 'https://lh5.ggpht.com/umqC1YkziBLMkVUOK1AIyeKQ21XenVPHKcuyQ-0cF_d-iWu0_qzUTmNYSr0-mQD1QBG8=h310', 'https://lh3.ggpht.com/KvS39jtOqDgg6dvhwnPOG6ut_CryiErqNhbAI3lMcmyrgaqvkVF7KkY8iul1KFRp2Rgg=h310', 'https://lh6.ggpht.com/LNrJyrT6qIZWnT3U_owhgsIALL5MKwbRg5-RLA-Vq7t2ClYDCp-VsaLw60oVDvn4pgk=h310', 'https://lh5.ggpht.com/eQlbgeBhehtnexZVlFXZynfmtJ88UeBoy28yUskYJohqNVc_-mtMHcJUikQrBLn8lIaP=h310', 'https://lh6.ggpht.com/GI2phoWIHPh3rsB3htlaozGpWSCniOXKvRlZHgcT_937fBPHhrXEhbNbsn3rcgpaHUk=h310'], 
+ 'images': [
+ 'https://lh6.ggpht.com/uUslqIsgo-3u38k_R-8rQYBNZvseBNAuwdcuuRfwgWiMpWfe5NFBkMUf758e4p7USNE=h310', 
+ 'https://lh4.ggpht.com/PplZu3Dfy_8Lqgr8lNWCMxd43jHqgTwaBdWwqPnVjmY7J93xrOgTKaB3jITsUafRuX0=h310', 
+ 'https://lh6.ggpht.com/udwukvUDYgnNOXwFqOXJ2lxZ3jghInCGD8RhSMuz2vtZ-GCI05nZpgxAnNG8IdOPyuXU=h310', 
+ 'https://lh5.ggpht.com/umqC1YkziBLMkVUOK1AIyeKQ21XenVPHKcuyQ-0cF_d-iWu0_qzUTmNYSr0-mQD1QBG8=h310', 
+ 'https://lh3.ggpht.com/KvS39jtOqDgg6dvhwnPOG6ut_CryiErqNhbAI3lMcmyrgaqvkVF7KkY8iul1KFRp2Rgg=h310', 
+ 'https://lh6.ggpht.com/LNrJyrT6qIZWnT3U_owhgsIALL5MKwbRg5-RLA-Vq7t2ClYDCp-VsaLw60oVDvn4pgk=h310', 
+ 'https://lh5.ggpht.com/eQlbgeBhehtnexZVlFXZynfmtJ88UeBoy28yUskYJohqNVc_-mtMHcJUikQrBLn8lIaP=h310', 
+ 'https://lh6.ggpht.com/GI2phoWIHPh3rsB3htlaozGpWSCniOXKvRlZHgcT_937fBPHhrXEhbNbsn3rcgpaHUk=h310'], 
  'logo': 'https://lh3.ggpht.com/lSLM0xhCA1RZOwaQcjhlwmsvaIQYaP3c5qbDKCgLALhydrgExnaSKZdGa8S3YtRuVA=w300',
  'android': 'Varies with device',,
- 'similar': ['com.handmark.tweetcaster', 'com.instagram.android', 'com.levelup.touiteur', 'com.facebook.katana', 'com.handlerexploit.tweedle', 'com.echofon', 'com.twidroid', 'com.sgiggle.production', 'net.janesoft.janetter.android.free', 'com.instachat.android', 'jp.jig.jigtwi.android', 'jp.ne.biglobe.twipple', 'com.seesmic', 'com.innovatty.followersplus', 'com.dotsandlines.carbon', 'com.hootsuite.droid.full'],
+ 'similar': ['com.handmark.tweetcaster', 'com.instagram.android', 'com.levelup.touiteur', 'com.facebook.katana',
+ 'com.handlerexploit.tweedle', 'com.echofon', 'com.twidroid', 'com.sgiggle.production',
+ 'net.janesoft.janetter.android.free', 'com.instachat.android', 'jp.jig.jigtwi.android', 'jp.ne.biglobe.twipple',
+ 'com.seesmic', 'com.innovatty.followersplus', 'com.dotsandlines.carbon', 'com.hootsuite.droid.full'],
  'size': 'Varies with device'}
 
 # return first 24 developer apps

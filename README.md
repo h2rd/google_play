@@ -10,10 +10,8 @@ Setup
 pip install google_play
 ```
 
-Example
--------
-
-This is example which return info about app
+Examples
+--------
 
 ```python
 python

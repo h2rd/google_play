@@ -94,7 +94,7 @@ def app(package_name, hl='en'):
     app['version'] = doc.select('//div[@itemprop="softwareVersion"]').text()
     app['size'] = doc.select('//div[@itemprop="fileSize"]').text()
     app['installs'] = doc.select('//div[@itemprop="numDownloads"]').text()
-    app['android'] = doc.select('//div[@itemprop="operatingSystems"]').text(),
+    app['android'] = doc.select('//div[@itemprop="operatingSystems"]').text()
     app['images'] = [im.attr('src') for im in doc.select('//img[@itemprop="screenshot"]')]
     app['similar'] = [item.attr('data-docid')
                       for item in doc.select('//div[@class="rec-cluster"][1]/*/div[@data-docid]')]

@@ -68,6 +68,15 @@ class Apps(unittest.TestCase):
         a = app('com.wHow2Makeapanelmould')
         self.assertIsInstance(a, dict)
 
+    def test_images_test(self):
+        a = app('kaus.mmautotrader.com')
+        self.assertIsInstance(a['images'], list)
+        self.assertNotEqual(len(a['images']), 0)
+
+    def test_developer_email(self):
+        a = app('com.pressmatrix.cimmagazine')
+        self.assertEqual(a['developer_website'], '')
+
     def test_app_info(self):
         a = app('com.twitter.android')
 

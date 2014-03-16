@@ -84,7 +84,11 @@ def app(package_name, hl='en'):
     app['logo'] = doc.select('//img[@class="cover-image"]').attr('src')
     app['price'] = doc.select('//meta[@itemprop="price"]').attr('content')
     app['developer_name'] = doc.select('//div[@itemprop="author"]/a').text()
-    app['developer_email'] = doc.select('//a[starts-with(@href, "mailto")]').attr('href')[7:]
+    try:
+        developer_email = doc.select('//a[starts-with(@href, "mailto")]').attr('href')[7:]
+    except:
+        developer_email = ''
+    app['developer_email'] = developer_email
     developer_website = re.search('\?q=(.*)&sa', doc.select('//a[@class="dev-link"]').attr('href'))
     if developer_website:
         app['developer_website'] = developer_website.group(1) or ''

@@ -86,9 +86,12 @@ def app(package_name, hl='en'):
     app['developer_name'] = doc.select('//div[@itemprop="author"]/a').text()
     app['developer_email'] = doc.select('//a[starts-with(@href, "mailto")]').attr('href')[7:]
     developer_website = re.search('\?q=(.*)&sa', doc.select('//a[@class="dev-link"]').attr('href'))
-    app['developer_website'] = developer_website.group(1) or ''
+    if developer_website:
+        app['developer_website'] = developer_website.group(1) or ''
+    else:
+        app['developer_website'] = ''
     app['rating'] = float(doc.select('//div[@class="score"]').text())
-    app['rewievs'] = int(doc.select('//span[@class="reviews-num"]').text().replace(',', ''))
+    app['reviews'] = int(doc.select('//span[@class="reviews-num"]').text().replace(',', ''))
     app['version'] = doc.select('//div[@itemprop="softwareVersion"]').text()
     app['size'] = doc.select('//div[@itemprop="fileSize"]').text()
     app['installs'] = doc.select('//div[@itemprop="numDownloads"]').text()

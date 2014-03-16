@@ -64,6 +64,10 @@ class Apps(unittest.TestCase):
         a = app('google.super.app')
         self.assertIsNone(a)
 
+    def test_numDownloads_problem(self):
+        a = app('com.wHow2Makeapanelmould')
+        self.assertIsInstance(a, dict)
+
     def test_app_info(self):
         a = app('com.twitter.android')
 

@@ -94,7 +94,11 @@ def app(package_name, hl='en'):
     app['reviews'] = int(doc.select('//span[@class="reviews-num"]').text().replace(',', ''))
     app['version'] = doc.select('//div[@itemprop="softwareVersion"]').text()
     app['size'] = doc.select('//div[@itemprop="fileSize"]').text()
-    app['installs'] = doc.select('//div[@itemprop="numDownloads"]').text()
+    try:
+        installs = doc.select('//div[@itemprop="numDownloads"]').text()
+    except:
+        installs = ''
+    app['installs'] = installs
     app['android'] = doc.select('//div[@itemprop="operatingSystems"]').text()
     app['images'] = [im.attr('src') for im in doc.select('//img[@itemprop="screenshot"]')]
     app['similar'] = [item.attr('data-docid')

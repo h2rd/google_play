@@ -73,13 +73,28 @@ class Apps(unittest.TestCase):
         self.assertIsInstance(a['images'], list)
         self.assertNotEqual(len(a['images']), 0)
 
-    def test_developer_email(self):
+    def test_pressmatrix(self):
         a = app('com.pressmatrix.cimmagazine')
-        self.assertEqual(a['developer_website'], '')
+        self.assertEqual(a['title'], 'CIM Kiosk')
+        self.assertEqual(a['category'], 'News & Magazines')
+        self.assertEqual(a['developer_name'], 'DVV Media Group GmbH')
+        self.assertIsInstance(a['images'], list)
+        self.assertNotEqual(len(a['images']), 14)
+        self.assertEqual(a['developer_email'], '')
+        self.assertEqual(len(a['similar']), 1)
+        self.assertEqual(a['developer_website'], 'http://www.cimunity.com/home/')
+
+    def test_setupgroup_app(self):
+        a = app('com.setupgroup.xo.free')
+        self.assertEqual(a['title'], 'XO Demo')
+        self.assertEqual(a['category'], 'Brain & Puzzle')
+        self.assertEqual(a['developer_name'], 'Setup Group')
+        self.assertEqual(a['developer_email'], 'mokun@setupgroup.com')
+        self.assertEqual(len(a['similar']), 16)
+        self.assertEqual(a['developer_website'], 'http://wwww.setupgroup.com')
 
     def test_app_info(self):
         a = app('com.twitter.android')
-
         self.assertIsInstance(a, dict)
         self.assertEqual(a['title'], 'Twitter')
         self.assertEqual(a['package_name'], 'com.twitter.android')

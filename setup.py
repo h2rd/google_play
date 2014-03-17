@@ -9,11 +9,11 @@ setup(
     description='Google Play app fetcher',
     license="MIT",
     url='https://github.com/h2rd/google_play',
-    version='0.1.1',
+    version='0.2.0',
     packages=['google_play'],
     test_suite='tests',
     install_requires=(
-        'grab==0.4.13',
+        'beautifulsoup4==4.3.2',
         'lxml==3.3.1',
         'requests==2.2.1'
     )

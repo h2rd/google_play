@@ -1,9 +1,7 @@
 import re
 import urllib
 
-from lxml import html
-from grab.selector import XpathSelector
-
+from bs4 import BeautifulSoup
 import requests
 
 CATEGORIES = [
@@ -26,11 +24,10 @@ def _get_apps(url):
     if r.status_code != 200:
         return None
 
-    doc = html.fromstring(r.content)
-
     apps = []
-    for elem in doc.xpath('//div[@class="card-list"]/div[@data-docid]'):
-        apps.append(elem.attrib['data-docid'])
+    soup = BeautifulSoup(r.content, "lxml")
+    for elem in soup.find_all('div', 'card'):
+        apps.append(elem.attrs['data-docid'])
 
     return apps
 
@@ -73,38 +70,45 @@ def app(package_name, hl='en'):
     if r.status_code != 200:
         return None
 
-    doc = XpathSelector(html.fromstring(r.content))
+    soup = BeautifulSoup(r.content, "lxml")
 
     app = dict()
-    app['title'] = doc.select('//div[@class="document-title"]').text()
+    app['title'] = soup.find('div', 'document-title').text.strip()
     app['url'] = package_url
     app['package_name'] = package_name
-    app['description'] = "\n".join(doc.select('//div[@class="id-app-orig-desc"]').text_list())
-    app['category'] = doc.select('//span[@itemprop="genre"]').text()
-    app['logo'] = doc.select('//img[@class="cover-image"]').attr('src')
-    app['price'] = doc.select('//meta[@itemprop="price"]').attr('content')
-    app['developer_name'] = doc.select('//div[@itemprop="author"]/a').text()
+    app['description'] = soup.find('div', 'id-app-orig-desc').text.strip()
+    app['category'] = soup.find('span', itemprop='genre').text
+    app['logo'] = soup.find('img', "cover-image").attrs['src']
+    app['price'] = soup.find('meta', itemprop="price").attrs['content']
+    app['developer_name'] = soup.find('div', itemprop="author").a.text.strip()
     try:
-        developer_email = doc.select('//a[starts-with(@href, "mailto")]').attr('href')[7:]
+        app['developer_email'] = soup.find('a', href=re.compile("^mailto")).attrs['href'][7:]
     except:
-        developer_email = ''
-    app['developer_email'] = developer_email
-    developer_website = re.search('\?q=(.*)&sa', doc.select('//a[@class="dev-link"]').attr('href'))
+        app['developer_email'] = ''
+
+    link = soup.find('a', "dev-link").attrs['href']
+    developer_website = re.search('\?q=(.*)&sa', link)
     if developer_website:
         app['developer_website'] = developer_website.group(1) or ''
     else:
         app['developer_website'] = ''
-    app['rating'] = float(doc.select('//div[@class="score"]').text())
-    app['reviews'] = int(doc.select('//span[@class="reviews-num"]').text().replace(',', ''))
-    app['version'] = doc.select('//div[@itemprop="softwareVersion"]').text()
-    app['size'] = doc.select('//div[@itemprop="fileSize"]').text()
+
+    app['rating'] = float(soup.find('div', 'score').text)
+    app['reviews'] = int(soup.find('span', 'reviews-num').text.replace(',', ''))
+    app['version'] = soup.find('div', itemprop="softwareVersion").text.strip()
+    app['size'] = soup.find('div', itemprop="fileSize").text.strip()
+
     try:
-        installs = doc.select('//div[@itemprop="numDownloads"]').text()
+        app['installs'] = soup.find('div', itemprop="numDownloads").text.strip()
     except:
-        installs = ''
-    app['installs'] = installs
-    app['android'] = doc.select('//div[@itemprop="operatingSystems"]').text()
-    app['images'] = [im.attr('src') for im in doc.select('//img[@itemprop="screenshot"]')]
-    app['similar'] = [item.attr('data-docid')
-                      for item in doc.select('//div[@class="rec-cluster"][1]/*/div[@data-docid]')]
+        app['installs'] = ''
+
+    app['android'] = soup.find('div', itemprop="operatingSystems").text.strip()
+    app['images'] = [im.attrs['src']
+                     for im in soup.find_all('img', itemprop="screenshot")]
+
+    html = soup.find('div', "rec-cluster")
+    app['similar'] = [similar.attrs['data-docid']
+                      for similar in html.find_all('div', 'card')]
+
     return app

@@ -9,7 +9,7 @@ setup(
     description='Google Play app fetcher',
     license="MIT",
     url='https://github.com/h2rd/google_play',
-    version='0.2.0',
+    version='0.2.1',
     packages=['google_play'],
     test_suite='tests',
     install_requires=(

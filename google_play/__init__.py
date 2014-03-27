@@ -108,7 +108,10 @@ def app(package_name, hl='en'):
                      for im in soup.find_all('img', itemprop="screenshot")]
 
     html = soup.find('div', "rec-cluster")
-    app['similar'] = [similar.attrs['data-docid']
-                      for similar in html.find_all('div', 'card')]
+    if html:
+        app['similar'] = [similar.attrs['data-docid']
+                          for similar in html.find_all('div', 'card')]
+    else:
+        app['similar'] = []
 
     return app

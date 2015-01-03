@@ -1,17 +1,21 @@
 Google play
-============
+===========
 
 Google Play app featcher
 
 Setup
 -----
 
+.. code-block:: bash
+
     pip install google_play
 
 Examples
 --------
 
-Get info about package name: ::
+Get info about package name
+
+.. code-block:: python
 
     >>> from google_play import app
     >>> app('com.twitter.android')
@@ -51,7 +55,9 @@ Get info about package name: ::
           'com.hootsuite.droid.full'],
       'size': 'Varies with device'}
 
-return first 24 developer apps: ::
+Return first 24 developer apps
+
+.. code-block:: python
 
     >>> from google_play import developer
     >>> developer('Zynga')
@@ -66,7 +72,9 @@ return first 24 developer apps: ::
       'com.zynga.gswfpaid', 'com.zynga.draw2.googleplay.paid',
       'com.zynga.inis.edentogreen', 'com.zynga.words_intl' ]
 
-returns search apps: ::
+Returns search apps
+
+.. code-block:: python
 
     >>> from google_play import search
     >>> search('Zynga')
@@ -83,7 +91,9 @@ returns search apps: ::
       'com.igg.pokerdeluxe', 'com.zynga.warofthefallen',
       'com.omgpop.dstfree', 'com.dragonplay.slotcity' ]
 
-get leaderboard free and paid apps by category: ::
+Get leaderboard free and paid apps by category
+
+.. code-block:: python
 
     >>> from google_play import leaderboard, FREE, PAID
     >>> leaderboard(FREE, 'game')

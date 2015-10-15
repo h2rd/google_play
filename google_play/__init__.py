@@ -1,8 +1,10 @@
 import re
 import urllib
-
-from bs4 import BeautifulSoup
+import lxml.html
 import requests
+
+from bs4 import UnicodeDammit
+
 
 CATEGORIES = [
     "application", "app_wallpaper", "app_widgets", "arcade",
@@ -16,24 +18,46 @@ CATEGORIES = [
     "tools", "transportation", "travel_and_local", "weather"
 ]
 
+
 FREE = 'topselling_free'
 PAID = 'topselling_paid'
+
+
+def decode_html(html_string):
+    converted = UnicodeDammit(html_string)
+
+    if not converted.unicode_markup:
+        raise UnicodeDecodeError(
+                "Failed to detect encoding, tried [%s]",
+                ', '.join(converted.triedEncodings))
+
+    return converted.unicode_markup
+
+
+def _get_text(doc, sel, default=''):
+    els = doc.cssselect(sel)
+    if len(els) > 0:
+        return unicode(els[0].text_content()).strip()
+    else:
+        return default or ''
+
+
+def _get_attrs(doc, sel, attr):
+    return [el.get(attr) for el in doc.cssselect(sel)]
+
 
 def _get_apps(url):
     r = requests.get(url)
     if r.status_code != 200:
         return None
 
-    apps = []
-    soup = BeautifulSoup(r.content, "lxml")
-    for elem in soup.find_all('div', 'card'):
-        apps.append(elem.attrs['data-docid'])
+    doc = lxml.html.fromstring(decode_html(r.content))
+    apps = _get_attrs(doc, 'div.card', 'data-docid')
 
     return apps
 
 
-def leaderboard(identifier, category=None, start=0,
-                num=24, hl="en"):
+def leaderboard(identifier, category=None, start=0, num=24, hl="en"):
     if identifier not in ('topselling_paid', 'topselling_free'):
         raise Exception("identifier must be topselling_paid or topselling_free")
 
@@ -44,74 +68,57 @@ def leaderboard(identifier, category=None, start=0,
         url += "/category/" + str(category).upper()
 
     url += "/collection/%s?start=%s&num=%s&hl=%s" % (identifier, start, num, hl)
-
     return _get_apps(url)
 
 
-def search(query, start=0, num=24, hl="en"):
+def search(query, hl="en", c="apps"):
     url = ('https://play.google.com/store/search'
-           '?q=%s&start=%s&num=%s&hl=%s') % (query, start, num, hl)
-
+           '?q=%s&hl=%s&c=%s') % (query, hl, c)
     return _get_apps(url)
 
 
-def developer(developer, start=0, num=24, hl="en"):
+def developer(developer, num=24, hl="en", c="apps"):
     url = ('https://play.google.com/store/apps/developer'
-           '?id=%s&start=%s&num=%s&hl=%s') % (urllib.quote_plus(developer), start, num, hl)
-
+           '?id=%s&num=%s&hl=%s&c=%s') % (
+                   urllib.quote_plus(developer), num, hl, c)
     return _get_apps(url)
 
 
-def app(package_name, hl='en'):
+def app(package_name, hl='en', c="apps"):
     package_url = ("https://play.google.com/store/apps/details"
-                   "?id=%s&hl=%s") % (package_name, hl)
+                   "?id=%s&hl=%s&c=%s") % (package_name, hl, c)
 
     r = requests.get(package_url)
     if r.status_code != 200:
         return None
 
-    soup = BeautifulSoup(r.content, "lxml")
+    doc = lxml.html.fromstring(decode_html(r.content))
 
-    app = dict()
-    app['title'] = soup.find('div', 'document-title').text.strip()
-    app['url'] = package_url
-    app['package_name'] = package_name
-    app['description'] = soup.find('div', 'id-app-orig-desc').text.strip()
-    app['category'] = soup.find('span', itemprop='genre').text
-    app['logo'] = soup.find('img', "cover-image").attrs['src']
-    app['price'] = soup.find('meta', itemprop="price").attrs['content']
-    app['developer_name'] = soup.find('div', itemprop="author").a.text.strip()
-    try:
-        app['developer_email'] = soup.find('a', href=re.compile("^mailto")).attrs['href'][7:]
-    except:
-        app['developer_email'] = ''
+    developer_website = re.search('\?q=(.*)&sa',
+            _get_attrs(doc, 'a.dev-link', 'href')[0])
 
-    link = soup.find('a', "dev-link").attrs['href']
-    developer_website = re.search('\?q=(.*)&sa', link)
     if developer_website:
-        app['developer_website'] = developer_website.group(1) or ''
+        developer_website = developer_website.group(1) or ''
     else:
-        app['developer_website'] = ''
+        developer_website = ''
 
-    app['rating'] = float(soup.find('div', 'score').text)
-    app['reviews'] = int(soup.find('span', 'reviews-num').text.replace(',', ''))
-    app['version'] = soup.find('div', itemprop="softwareVersion").text.strip()
-    app['size'] = soup.find('div', itemprop="fileSize").text.strip()
-
-    try:
-        app['installs'] = soup.find('div', itemprop="numDownloads").text.strip()
-    except:
-        app['installs'] = ''
-
-    app['android'] = soup.find('div', itemprop="operatingSystems").text.strip()
-    app['images'] = [im.attrs['src']
-                     for im in soup.find_all('img', itemprop="screenshot")]
-
-    html = soup.find('div', "rec-cluster")
-    if html:
-        app['similar'] = [similar.attrs['data-docid']
-                          for similar in html.find_all('div', 'card')]
-    else:
-        app['similar'] = []
-
-    return app
+    return dict(
+        title=_get_text(doc, 'h1.document-title'),
+        url=package_url,
+        package_name=package_name,
+        description=_get_text(doc, 'div.id-app-orig-desc'),
+        category=_get_text(doc, 'span[itemprop=genre]'),
+        logo=_get_attrs(doc, 'img.cover-image', 'src')[0],
+        price=_get_attrs(doc, 'meta[itemprop="price"]', 'content')[0],
+        developer_name=_get_text(doc, 'div[itemprop="author"] span[itemprop="name"]'),
+        developer_email=_get_attrs(doc, 'a.dev-link[href^=mailto]', 'href')[0][7:],
+        developer_website=developer_website,
+        rating=float(_get_text(doc, 'div.score')),
+        reviews=int(_get_text(doc, 'span.reviews-num').replace(',', '')),
+        version=_get_text(doc, 'div[itemprop="softwareVersion"]'),
+        size=_get_text(doc, 'div[itemprop=fileSize]'),
+        installs=_get_text(doc, 'div[itemprop=numDownloads]'),
+        android=_get_text(doc, 'div[itemprop=operatingSystems]'),
+        images=_get_attrs(doc, 'img[itemprop="screenshot"]', 'src'),
+        similar=_get_attrs(doc, 'div.card', 'data-docid')
+    )

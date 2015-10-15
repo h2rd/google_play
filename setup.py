@@ -12,5 +12,10 @@ setup(
     version='0.3.0',
     packages=['google_play'],
     test_suite='tests',
-    install_requires=('lxml==3.4.1', 'cssselect==0.9.1', 'requests[security]')
+    install_requires=(
+        'lxml==3.4.1',
+        'cssselect==0.9.1',
+        'requests[security]',
+        'beautifulsoup4==4.3.2'
+    )
 )

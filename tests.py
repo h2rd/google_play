@@ -5,7 +5,7 @@ from google_play import (leaderboard, search, developer,
 
 class Developer(unittest.TestCase):
     def test_not_exists_developer(self):
-        apps = developer('twitter', start=20)
+        apps = developer('twitter')
         self.assertEqual(len(apps), 0)
 
     def test_twitter_with_numbers(self):

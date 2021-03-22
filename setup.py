@@ -13,7 +13,7 @@ setup(
     packages=['google_play'],
     test_suite='tests',
     install_requires=(
-        'lxml==4.6.2',
+        'lxml==4.6.3',
         'cssselect==0.9.1',
         'requests[security]',
         'beautifulsoup4==4.3.2'
